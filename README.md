@@ -2,9 +2,9 @@
 
 Plano de treino e alimentação para perder peso dos 92 kg para os 80 kg, em página HTML única, otimizada para telemóvel.
 
-- **Perfil:** homem, 33 anos, 179 cm, lesão de grau IV na patela do joelho esquerdo
+- **Perfil:** homem, 33 anos, 179 cm, trabalho sentado (engenheiro de software), lesão de grau IV na patela do joelho esquerdo
 - **Treino:** 4 sessões/semana de ~40 min em máquinas Technogym (ginásio Solinca), sem exercícios que sobrecarreguem a patela
-- **Alimentação:** dieta mediterrânica portuguesa, ~2 150 kcal/dia (défice de ~500 kcal → ~0,5 kg/semana)
+- **Alimentação:** dieta mediterrânica portuguesa, ~2 050 kcal/dia (défice de ~500 kcal → ~0,5 kg/semana), com refeições pensadas para servir também uma criança de 2 anos e meio
 - **Extras:** registo de pesagens semanais com gráfico (guardado localmente no navegador)
 
 ## Como usar
