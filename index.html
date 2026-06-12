@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1b5e4a">
+<title>Plano 92→80 · Treino &amp; Alimentação</title>
+<style>
+  :root{
+    --verde:#1b5e4a;
+    --verde-claro:#e8f3ef;
+    --verde-medio:#2e8b6e;
+    --laranja:#e07a3f;
+    --texto:#22302b;
+    --texto-suave:#5c6f68;
+    --fundo:#f5f7f6;
+    --branco:#ffffff;
+    --vermelho:#c0392b;
+    --amarelo:#fdf3e3;
+    --raio:14px;
+    --sombra:0 1px 4px rgba(0,0,0,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--fundo);color:var(--texto);line-height:1.55;
+    padding-bottom:calc(64px + env(safe-area-inset-bottom));
+  }
+  header{
+    background:linear-gradient(135deg,var(--verde),var(--verde-medio));
+    color:#fff;padding:20px 16px 16px;
+  }
+  header h1{font-size:1.25rem;font-weight:700}
+  header p{font-size:.85rem;opacity:.9;margin-top:2px}
+  .badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .badge{background:rgba(255,255,255,.18);border-radius:999px;padding:4px 12px;font-size:.78rem;font-weight:600}
+  main{max-width:680px;margin:0 auto;padding:16px}
+  section.tab{display:none}
+  section.tab.ativa{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  h2{font-size:1.1rem;margin:18px 0 10px;color:var(--verde)}
+  h2:first-child{margin-top:4px}
+  h3{font-size:.95rem;margin:14px 0 6px}
+  p{font-size:.92rem}
+  .cartao{
+    background:var(--branco);border-radius:var(--raio);box-shadow:var(--sombra);
+    padding:14px 16px;margin-bottom:12px;
+  }
+  .grelha{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px}
+  .stat{background:var(--branco);border-radius:var(--raio);box-shadow:var(--sombra);padding:12px;text-align:center}
+  .stat .num{font-size:1.3rem;font-weight:800;color:var(--verde)}
+  .stat .rot{font-size:.72rem;color:var(--texto-suave);text-transform:uppercase;letter-spacing:.04em}
+  .aviso{
+    background:var(--amarelo);border-left:4px solid var(--laranja);
+    border-radius:8px;padding:12px 14px;font-size:.86rem;margin-bottom:12px;
+  }
+  .aviso strong{color:var(--laranja)}
+  ul,ol{padding-left:20px;font-size:.92rem}
+  li{margin-bottom:5px}
+  details{
+    background:var(--branco);border-radius:var(--raio);box-shadow:var(--sombra);
+    margin-bottom:10px;overflow:hidden;
+  }
+  summary{
+    list-style:none;cursor:pointer;padding:14px 16px;font-weight:700;font-size:.95rem;
+    display:flex;justify-content:space-between;align-items:center;gap:8px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:1.2rem;color:var(--verde-medio);flex-shrink:0}
+  details[open] summary::after{content:"–"}
+  details .corpo{padding:0 16px 14px}
+  .etiqueta{
+    display:inline-block;background:var(--verde-claro);color:var(--verde);
+    border-radius:999px;padding:2px 10px;font-size:.72rem;font-weight:700;margin-left:6px;
+  }
+  table{width:100%;border-collapse:collapse;font-size:.85rem}
+  th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #e5ebe9;vertical-align:top}
+  th{font-size:.74rem;text-transform:uppercase;letter-spacing:.03em;color:var(--texto-suave)}
+  td:last-child,th:last-child{text-align:right;white-space:nowrap}
+  .ex td:first-child{font-weight:600}
+  .ex .maq{display:block;font-weight:400;font-size:.78rem;color:var(--texto-suave)}
+  .nao{color:var(--vermelho);font-weight:700}
+  .sim{color:var(--verde-medio);font-weight:700}
+  .refeicao{border-bottom:1px solid #e5ebe9;padding:10px 0}
+  .refeicao:last-child{border-bottom:none}
+  .refeicao .titulo{font-weight:700;font-size:.88rem;display:flex;justify-content:space-between}
+  .refeicao .titulo .kcal{color:var(--texto-suave);font-weight:600;font-size:.8rem}
+  .refeicao p{font-size:.86rem;color:var(--texto-suave);margin-top:2px}
+  nav{
+    position:fixed;bottom:0;left:0;right:0;z-index:10;
+    background:var(--branco);box-shadow:0 -2px 8px rgba(0,0,0,.08);
+    display:flex;padding-bottom:env(safe-area-inset-bottom);
+  }
+  nav button{
+    flex:1;background:none;border:none;padding:10px 4px 8px;cursor:pointer;
+    font-size:.7rem;color:var(--texto-suave);font-weight:600;
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  nav button .icone{font-size:1.25rem;line-height:1}
+  nav button.ativa{color:var(--verde)}
+  form#formPeso{display:flex;gap:8px;margin-bottom:12px}
+  form#formPeso input{
+    flex:1;padding:12px;border:1px solid #cfdad6;border-radius:10px;font-size:1rem;min-width:0;
+  }
+  form#formPeso button{
+    background:var(--verde);color:#fff;border:none;border-radius:10px;
+    padding:12px 18px;font-weight:700;font-size:.95rem;cursor:pointer;
+  }
+  #grafico{width:100%;height:180px;display:block}
+  .registo{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e5ebe9;font-size:.9rem}
+  .registo:last-child{border-bottom:none}
+  .registo .apagar{background:none;border:none;color:var(--vermelho);cursor:pointer;font-size:.85rem}
+  .rodape{text-align:center;font-size:.75rem;color:var(--texto-suave);margin:24px 0 8px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Plano 92 → 80 kg</h1>
+  <p>Treino Technogym + Dieta Mediterrânica Portuguesa</p>
+  <div class="badges">
+    <span class="badge">Homem · 33 anos</span>
+    <span class="badge">179 cm</span>
+    <span class="badge">4× / semana · ~40 min</span>
+    <span class="badge">Joelho protegido</span>
+  </div>
+</header>
+
+<main>
+
+<!-- ===================== VISÃO GERAL ===================== -->
+<section class="tab ativa" id="tab-geral">
+  <div class="grelha">
+    <div class="stat"><div class="num">2 150</div><div class="rot">kcal / dia</div></div>
+    <div class="stat"><div class="num">−0,5 kg</div><div class="rot">por semana</div></div>
+    <div class="stat"><div class="num">~24</div><div class="rot">semanas</div></div>
+    <div class="stat"><div class="num">155 g</div><div class="rot">proteína / dia</div></div>
+  </div>
+
+  <div class="aviso">
+    <strong>Importante — joelho:</strong> com uma lesão de grau IV na patela, valida este plano
+    com o teu médico ou fisioterapeuta antes de começar. Regra de ouro: <strong>dor acima de 3/10
+    durante ou depois do exercício = reduz carga ou amplitude</strong>. Inchaço no dia seguinte = recua um passo.
+  </div>
+
+  <div class="cartao">
+    <h2>Como funciona</h2>
+    <p>O teu gasto energético estimado é de <strong>~2 650–2 700 kcal/dia</strong> (metabolismo basal
+    ~1 880 kcal + atividade + 4 treinos/semana). Comendo <strong>~2 150 kcal/dia</strong> crias um défice
+    de ~500 kcal, o que dá <strong>~0,5 kg por semana</strong> — dos 92 kg aos 80 kg em cerca de
+    <strong>6 meses</strong> (meta: dezembro de 2026).</p>
+    <h3>Macros diários (alvo)</h3>
+    <ul>
+      <li><strong>Proteína: 150–160 g</strong> — protege o músculo e mata a fome</li>
+      <li><strong>Gordura: 65–70 g</strong> — sobretudo azeite, peixe gordo, frutos secos</li>
+      <li><strong>Hidratos: 200–220 g</strong> — pão de mistura, arroz, batata, leguminosas, fruta</li>
+    </ul>
+  </div>
+
+  <div class="cartao">
+    <h2>As 8 regras do plano</h2>
+    <ol>
+      <li><strong>4 treinos/semana, ~40 min</strong> — curtos e intensos, sem aulas de grupo.</li>
+      <li><strong>Proteína em todas as refeições</strong> (peixe, frango, ovos, iogurte, leguminosas).</li>
+      <li><strong>Sopa de legumes antes do almoço e jantar</strong> — o truque português que funciona.</li>
+      <li><strong>Azeite é a gordura principal</strong>, mas mede: 1 colher de sopa = 120 kcal.</li>
+      <li><strong>Zero calorias líquidas</strong> — água, café e chá à vontade; refrigerantes e sumos não. Álcool: máx. 2–3 copos de vinho/cerveja <em>por semana</em>.</li>
+      <li><strong>8–10 mil passos por dia</strong> — caminhada em piso plano não agride o joelho.</li>
+      <li><strong>Pesa-te 1× por semana</strong>, de manhã, em jejum, no mesmo dia (regista na aba Progresso).</li>
+      <li><strong>Dormir 7–8 h</strong> — dormir mal aumenta a fome no dia seguinte.</li>
+    </ol>
+  </div>
+
+  <div class="cartao">
+    <h2>Semana-tipo</h2>
+    <table>
+      <tr><th>Dia</th><th>Atividade</th></tr>
+      <tr><td>Segunda</td><td>Treino A — Tronco (empurrar)</td></tr>
+      <tr><td>Terça</td><td>Treino B — Pernas e glúteos</td></tr>
+      <tr><td>Quarta</td><td>Descanso ativo — caminhada 30–40 min</td></tr>
+      <tr><td>Quinta</td><td>Treino C — Tronco (puxar)</td></tr>
+      <tr><td>Sexta</td><td>Treino D — Corpo inteiro + cardio</td></tr>
+      <tr><td>Sábado</td><td>Caminhada longa ou bicicleta suave</td></tr>
+      <tr><td>Domingo</td><td>Descanso total</td></tr>
+    </table>
+    <p style="margin-top:8px;font-size:.82rem;color:var(--texto-suave)">Podes trocar os dias — mantém apenas 1 dia de intervalo entre os dois treinos de tronco e evita treinar pernas em dias seguidos.</p>
+  </div>
+</section>
+
+<!-- ===================== TREINO ===================== -->
+<section class="tab" id="tab-treino">
+  <div class="aviso">
+    <strong>Proteção da patela — o que NUNCA fazer:</strong> cadeira extensora (leg extension),
+    agachamento profundo, afundos (lunges), corrida na passadeira, saltos. Estes movimentos
+    multiplicam a pressão na cartilagem da patela.
+  </div>
+
+  <div class="cartao">
+    <h2>Princípios</h2>
+    <ul>
+      <li><span class="sim">Sim:</span> prensa de pernas com amplitude curta (dobrar o joelho no máx. até ~60°), leg curl, trabalho de glúteo e anca, bicicleta com selim alto e pouca resistência, elítica suave.</li>
+      <li><span class="nao">Não:</span> tudo o que dobre o joelho com carga além de ~90°, impacto, ou dor &gt; 3/10.</li>
+      <li><strong>Progressão:</strong> quando conseguires fazer todas as séries no topo do intervalo de repetições, sobe a carga ~5% no treino seguinte.</li>
+      <li><strong>Descanso entre séries:</strong> 60–90 s (tronco), 90 s (pernas). Sessão completa cabe em 40 min.</li>
+      <li>Nas máquinas Technogym da Solinca podes guardar as cargas na app <strong>Technogym / mywellness</strong> com a pulseira ou QR do ginásio.</li>
+    </ul>
+  </div>
+
+  <details open>
+    <summary>Treino A — Tronco: empurrar <span class="etiqueta">~40 min</span></summary>
+    <div class="corpo">
+      <table class="ex">
+        <tr><th>Exercício</th><th>Séries × Reps</th></tr>
+        <tr><td>Aquecimento <span class="maq">Bike (selim alto, resistência leve)</span></td><td>5 min</td></tr>
+        <tr><td>Chest Press <span class="maq">Technogym Selection Chest Press</span></td><td>3 × 8–12</td></tr>
+        <tr><td>Shoulder Press <span class="maq">Technogym Shoulder Press</span></td><td>3 × 8–12</td></tr>
+        <tr><td>Crossover / Aberturas no cabo <span class="maq">Cable Station (Ercolina)</span></td><td>3 × 10–15</td></tr>
+        <tr><td>Tríceps na polia <span class="maq">Cable Station, corda</span></td><td>3 × 10–15</td></tr>
+        <tr><td>Prancha frontal</td><td>3 × 30–45 s</td></tr>
+        <tr><td>Cardio final <span class="maq">Bike ou elítica, ritmo conversável</span></td><td>8 min</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <details>
+    <summary>Treino B — Pernas e glúteos <span class="etiqueta">~40 min</span></summary>
+    <div class="corpo">
+      <table class="ex">
+        <tr><th>Exercício</th><th>Séries × Reps</th></tr>
+        <tr><td>Aquecimento <span class="maq">Bike, resistência muito leve</span></td><td>8 min</td></tr>
+        <tr><td>Prensa de pernas — amplitude curta <span class="maq">Leg Press · joelho dobra no máx. 60°, sem dor</span></td><td>3 × 10–12</td></tr>
+        <tr><td>Leg Curl <span class="maq">Technogym Leg Curl (sentado ou deitado)</span></td><td>3 × 10–12</td></tr>
+        <tr><td>Peso morto romeno com halteres <span class="maq">Joelhos quase esticados; trabalha glúteo e posterior</span></td><td>3 × 10–12</td></tr>
+        <tr><td>Abdutores <span class="maq">Technogym Abductor</span></td><td>3 × 12–15</td></tr>
+        <tr><td>Gémeos na prensa <span class="maq">Leg Press, pernas esticadas, só tornozelo</span></td><td>2 × 12–15</td></tr>
+        <tr><td>Dead bug (core)</td><td>3 × 10/lado</td></tr>
+      </table>
+      <p style="font-size:.82rem;color:var(--texto-suave);margin-top:8px">Na prensa: pés altos na plataforma e à largura dos ombros — desloca o esforço para glúteos e reduz pressão na patela.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Treino C — Tronco: puxar <span class="etiqueta">~40 min</span></summary>
+    <div class="corpo">
+      <table class="ex">
+        <tr><th>Exercício</th><th>Séries × Reps</th></tr>
+        <tr><td>Aquecimento <span class="maq">Elítica suave</span></td><td>5 min</td></tr>
+        <tr><td>Puxada vertical <span class="maq">Technogym Lat Machine / Vertical Traction</span></td><td>3 × 8–12</td></tr>
+        <tr><td>Remada sentada <span class="maq">Technogym Low Row</span></td><td>3 × 8–12</td></tr>
+        <tr><td>Face pull <span class="maq">Cable Station, corda à altura da cara</span></td><td>3 × 12–15</td></tr>
+        <tr><td>Bíceps na polia ou halteres</td><td>3 × 10–15</td></tr>
+        <tr><td>Abdominal na máquina ou crunch no chão</td><td>3 × 12–15</td></tr>
+        <tr><td>Cardio final <span class="maq">Bike ou elítica</span></td><td>8 min</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <details>
+    <summary>Treino D — Corpo inteiro + cardio <span class="etiqueta">~40 min</span></summary>
+    <div class="corpo">
+      <table class="ex">
+        <tr><th>Exercício</th><th>Séries × Reps</th></tr>
+        <tr><td>Aquecimento <span class="maq">Bike leve</span></td><td>5 min</td></tr>
+        <tr><td>Peso morto romeno com halteres</td><td>3 × 10</td></tr>
+        <tr><td>Chest Press</td><td>2 × 10–12</td></tr>
+        <tr><td>Remada sentada</td><td>2 × 10–12</td></tr>
+        <tr><td>Leg Curl</td><td>2 × 12</td></tr>
+        <tr><td>Prancha lateral</td><td>2 × 20–30 s/lado</td></tr>
+        <tr><td>Cardio intervalado na bike <span class="maq">1 min forte (sem dor) + 2 min leve, × 4–5 · cadência alta, resistência baixa</span></td><td>12–15 min</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <div class="cartao">
+    <h2>Fortalecer o joelho (em casa, 2–3×/semana)</h2>
+    <ul>
+      <li><strong>Isometria de quadricípite:</strong> sentado, perna esticada, contrai a coxa 10 s × 10.</li>
+      <li><strong>Elevação de perna esticada:</strong> deitado, sobe a perna esticada até 45° — 3 × 12.</li>
+      <li><strong>Ponte de glúteos:</strong> 3 × 15.</li>
+      <li><strong>Concha (clamshell):</strong> deitado de lado, 3 × 15/lado.</li>
+    </ul>
+    <p style="font-size:.82rem;color:var(--texto-suave)">Quadricípite e glúteo fortes estabilizam a patela e reduzem a dor a longo prazo. Se tiveres fisioterapeuta, segue o protocolo dele em vez deste.</p>
+  </div>
+</section>
+
+<!-- ===================== ALIMENTAÇÃO ===================== -->
+<section class="tab" id="tab-comida">
+  <div class="cartao">
+    <h2>Estrutura diária — ~2 150 kcal</h2>
+    <div class="refeicao">
+      <div class="titulo"><span>Pequeno-almoço</span><span class="kcal">~400 kcal</span></div>
+      <p>Proteína + cereal integral + fruta + café</p>
+    </div>
+    <div class="refeicao">
+      <div class="titulo"><span>Lanche da manhã (opcional)</span><span class="kcal">~150 kcal</span></div>
+      <p>Fruta + frutos secos, ou iogurte</p>
+    </div>
+    <div class="refeicao">
+      <div class="titulo"><span>Almoço</span><span class="kcal">~650 kcal</span></div>
+      <p>Sopa + prato (proteína + hidrato + legumes) + fruta</p>
+    </div>
+    <div class="refeicao">
+      <div class="titulo"><span>Lanche da tarde</span><span class="kcal">~250 kcal</span></div>
+      <p>Iogurte/queijo fresco + pão ou fruta — segura-te até ao jantar</p>
+    </div>
+    <div class="refeicao">
+      <div class="titulo"><span>Jantar</span><span class="kcal">~600 kcal</span></div>
+      <p>Sopa + prato mais leve em hidratos do que o almoço</p>
+    </div>
+    <div class="refeicao">
+      <div class="titulo"><span>Após o jantar (se precisares)</span><span class="kcal">~100 kcal</span></div>
+      <p>Iogurte natural ou 2 quadrados de chocolate preto ≥70%</p>
+    </div>
+  </div>
+
+  <div class="cartao">
+    <h2>Porções de referência</h2>
+    <ul>
+      <li><strong>Peixe/carne:</strong> 150–180 g cozinhado (palma da mão e mais um pouco)</li>
+      <li><strong>Arroz/massa cozidos:</strong> 4–5 colheres de sopa · <strong>Batata:</strong> 2 médias</li>
+      <li><strong>Leguminosas cozidas:</strong> 4–6 colheres de sopa (podem substituir o hidrato)</li>
+      <li><strong>Azeite:</strong> máx. 2 colheres de sopa por dia no total (tempero + confeção)</li>
+      <li><strong>Pão:</strong> 1 carcaça de mistura ou 2 fatias de pão escuro por dia</li>
+      <li><strong>Legumes/salada:</strong> metade do prato, sem limite</li>
+    </ul>
+  </div>
+
+  <details open>
+    <summary>Menu semanal — exemplo</summary>
+    <div class="corpo">
+      <table>
+        <tr><th>Dia</th><th>Almoço</th><th>Jantar</th></tr>
+        <tr><td><strong>2ª</strong></td><td>Sopa juliana + frango grelhado, arroz, salada</td><td>Sopa + omelete de 3 ovos com espinafres, tomate</td></tr>
+        <tr><td><strong>3ª</strong></td><td>Sopa + dourada grelhada, batata cozida, brócolos</td><td>Sopa + salada de grão com atum, pimento e cebola</td></tr>
+        <tr><td><strong>4ª</strong></td><td>Sopa + bife de peru, esparguete integral, salada</td><td>Sopa + bacalhau cozido com couves e 1 batata, azeite e alho</td></tr>
+        <tr><td><strong>5ª</strong></td><td>Sopa + salmão no forno, batata-doce, legumes</td><td>Sopa + frango estufado com feijão-verde</td></tr>
+        <tr><td><strong>6ª</strong></td><td>Sopa + feijoada de legumes com lombo magro (porção controlada)</td><td>Sopa + sardinha ou carapau grelhado, salada de tomate</td></tr>
+        <tr><td><strong>Sáb</strong></td><td>Refeição livre moderada (almoço fora, etc.)</td><td>Sopa + pescada cozida com legumes</td></tr>
+        <tr><td><strong>Dom</strong></td><td>Sopa + arroz de frango (versão caseira, pouco arroz)</td><td>Sopa + salada de polvo ou ovos mexidos com legumes</td></tr>
+      </table>
+      <p style="font-size:.82rem;color:var(--texto-suave);margin-top:8px">Pequenos-almoços e lanches: combina à vontade as opções abaixo.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Pequenos-almoços (~400 kcal) — 4 opções</summary>
+    <div class="corpo">
+      <ul>
+        <li>2 ovos mexidos + 1 fatia de pão escuro + 1 peça de fruta + café</li>
+        <li>Iogurte grego natural ou skyr (170 g) + 40 g de aveia + 1 banana + canela</li>
+        <li>1 carcaça de mistura com queijo fresco e fiambre de aves + 1 laranja + galão de máquina sem açúcar</li>
+        <li>Papas de aveia (40 g) feitas com leite meio-gordo + 1 colher de chá de mel + frutos vermelhos</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Lanches (~150–250 kcal) — 5 opções</summary>
+    <div class="corpo">
+      <ul>
+        <li>1 peça de fruta + 10–12 amêndoas ou nozes</li>
+        <li>Iogurte natural + 1 colher de sopa de aveia</li>
+        <li>1 fatia de pão escuro com 1 lata pequena de atum ao natural</li>
+        <li>Queijo fresco (½ unidade) + tomate com orégãos</li>
+        <li>Pré-treino rápido: 1 banana ou 1 tostas com mel</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Guia de restaurante / dia fora</summary>
+    <div class="corpo">
+      <ul>
+        <li><strong>Tasca/restaurante:</strong> peixe grelhado ou carne grelhada + salada/legumes; pede para trocar batata frita por cozida ou arroz; dispensa o couvert (pão, manteiga, queijo).</li>
+        <li><strong>Prato do dia:</strong> escolhe grelhados/estufados, evita frituras e molhos de natas.</li>
+        <li><strong>Francesinha, picanha, rodízio:</strong> guarda para 1× por mês, não por semana.</li>
+        <li><strong>Café:</strong> expresso ou abatanado, sem açúcar (ou adoçante). O pastel de nata (~220 kcal) cabe 1–2× por semana se cortares no lanche.</li>
+        <li><strong>Vinho/cerveja:</strong> 1 copo = ~120–150 kcal. Máximo 2–3 por semana.</li>
+      </ul>
+    </div>
+  </details>
+
+  <div class="cartao">
+    <h2>Lista de compras base (semanal)</h2>
+    <ul>
+      <li><strong>Peixe:</strong> dourada/robalo, pescada, carapau ou sardinha, bacalhau, atum em lata ao natural, salmão</li>
+      <li><strong>Carne e ovos:</strong> peito de frango, bife de peru, lombo de porco magro, 1 dúzia de ovos</li>
+      <li><strong>Laticínios:</strong> iogurtes naturais/skyr, queijo fresco, leite meio-gordo</li>
+      <li><strong>Legumes para sopa e prato:</strong> couve, cenoura, abóbora, alho-francês, brócolos, feijão-verde, espinafres, cebola, alho, tomate, alface, pimento</li>
+      <li><strong>Despensa:</strong> azeite virgem extra, grão e feijão (frasco), aveia, arroz, massa integral, batata, batata-doce, pão escuro/mistura, frutos secos, chocolate preto ≥70%</li>
+      <li><strong>Fruta:</strong> maçã, laranja, banana, pera, kiwi — 2–3 peças/dia</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== PROGRESSO ===================== -->
+<section class="tab" id="tab-progresso">
+  <div class="cartao">
+    <h2>Registo de peso semanal</h2>
+    <p style="font-size:.85rem;color:var(--texto-suave);margin-bottom:10px">
+      Pesa-te 1× por semana, de manhã, em jejum. Os dados ficam guardados neste telemóvel/navegador.
+    </p>
+    <form id="formPeso">
+      <input type="number" id="inputPeso" step="0.1" min="60" max="120" inputmode="decimal" placeholder="Peso em kg (ex.: 91,4)" required>
+      <button type="submit">Registar</button>
+    </form>
+    <canvas id="grafico" width="640" height="180"></canvas>
+    <div id="listaPesos"></div>
+  </div>
+
+  <div class="cartao">
+    <h2>Marcos do percurso</h2>
+    <table>
+      <tr><th>Peso</th><th>Significado</th></tr>
+      <tr><td>92 kg</td><td>Ponto de partida (IMC 28,7)</td></tr>
+      <tr><td>89 kg</td><td>Primeiro mês — confirma o ritmo</td></tr>
+      <tr><td>86 kg</td><td>−6 kg: metade do caminho, roupa mais larga</td></tr>
+      <tr><td>83 kg</td><td>Menos carga sobre o joelho a cada passo</td></tr>
+      <tr><td>80 kg</td><td>Meta — IMC 25,0 ✔</td></tr>
+    </table>
+    <p style="margin-top:8px;font-size:.82rem;color:var(--texto-suave)">
+      Cada kg perdido reduz ~4 kg de pressão na patela ao subir escadas — perder peso é, em si, tratamento para o joelho.
+    </p>
+  </div>
+
+  <div class="cartao">
+    <h2>Se o peso estagnar 2–3 semanas</h2>
+    <ol>
+      <li>Confirma as porções (azeite, frutos secos e pão são onde as calorias fogem).</li>
+      <li>Aumenta os passos diários para 10–12 mil antes de cortar comida.</li>
+      <li>Se mesmo assim não mexer, corta ~150 kcal/dia (ex.: o lanche da manhã).</li>
+      <li>Estagnação à medida que perdes peso é normal — o corpo gasta menos aos 84 kg do que aos 92 kg.</li>
+    </ol>
+  </div>
+</section>
+
+<p class="rodape">Plano criado em junho de 2026 · Não substitui aconselhamento médico ou nutricional profissional.</p>
+</main>
+
+<nav>
+  <button class="ativa" data-tab="tab-geral"><span class="icone">🏠</span>Visão geral</button>
+  <button data-tab="tab-treino"><span class="icone">🏋️</span>Treino</button>
+  <button data-tab="tab-comida"><span class="icone">🥗</span>Alimentação</button>
+  <button data-tab="tab-progresso"><span class="icone">📈</span>Progresso</button>
+</nav>
+
+<script>
+// Navegação por separadores
+document.querySelectorAll('nav button').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('ativa'); });
+    document.querySelectorAll('section.tab').forEach(function(s){ s.classList.remove('ativa'); });
+    btn.classList.add('ativa');
+    document.getElementById(btn.dataset.tab).classList.add('ativa');
+    window.scrollTo({top:0});
+  });
+});
+
+// Registo de peso (localStorage)
+var CHAVE = 'pesos9280';
+function lerPesos(){
+  try { return JSON.parse(localStorage.getItem(CHAVE)) || []; }
+  catch(e){ return []; }
+}
+function guardarPesos(p){ localStorage.setItem(CHAVE, JSON.stringify(p)); }
+
+function desenhar(){
+  var pesos = lerPesos();
+  var lista = document.getElementById('listaPesos');
+  lista.innerHTML = '';
+  pesos.slice().reverse().forEach(function(r, idxInv){
+    var idx = pesos.length - 1 - idxInv;
+    var div = document.createElement('div');
+    div.className = 'registo';
+    var delta = idx > 0 ? (r.kg - pesos[idx-1].kg) : (r.kg - 92);
+    var sinal = delta > 0 ? '+' : '';
+    div.innerHTML = '<span>' + r.data + '</span><span><strong>' + r.kg.toFixed(1) + ' kg</strong> ' +
+      '<small style="color:' + (delta <= 0 ? 'var(--verde-medio)' : 'var(--vermelho)') + '">(' + sinal + delta.toFixed(1) + ')</small> ' +
+      '<button class="apagar" data-i="' + idx + '" aria-label="Apagar registo">✕</button></span>';
+    lista.appendChild(div);
+  });
+  lista.querySelectorAll('.apagar').forEach(function(b){
+    b.addEventListener('click', function(){
+      var p = lerPesos();
+      p.splice(parseInt(b.dataset.i, 10), 1);
+      guardarPesos(p);
+      desenhar();
+    });
+  });
+
+  // Gráfico simples
+  var c = document.getElementById('grafico');
+  var ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  var pts = [{kg:92}].concat(pesos);
+  var min = 78, max = 94;
+  var px = function(i){ return 20 + i * (c.width - 40) / Math.max(pts.length - 1, 1); };
+  var py = function(kg){ return 10 + (max - kg) * (c.height - 30) / (max - min); };
+  // linha da meta (80 kg)
+  ctx.strokeStyle = '#e07a3f'; ctx.setLineDash([5,5]); ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, py(80)); ctx.lineTo(c.width, py(80)); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#e07a3f'; ctx.font = '12px sans-serif';
+  ctx.fillText('meta 80 kg', 4, py(80) - 5);
+  // linha do peso
+  ctx.strokeStyle = '#1b5e4a'; ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  pts.forEach(function(p, i){ i === 0 ? ctx.moveTo(px(i), py(p.kg)) : ctx.lineTo(px(i), py(p.kg)); });
+  ctx.stroke();
+  ctx.fillStyle = '#1b5e4a';
+  pts.forEach(function(p, i){
+    ctx.beginPath(); ctx.arc(px(i), py(p.kg), 4, 0, 7); ctx.fill();
+  });
+}
+
+document.getElementById('formPeso').addEventListener('submit', function(e){
+  e.preventDefault();
+  var input = document.getElementById('inputPeso');
+  var kg = parseFloat(String(input.value).replace(',', '.'));
+  if (isNaN(kg)) return;
+  var p = lerPesos();
+  var hoje = new Date();
+  p.push({ data: hoje.toLocaleDateString('pt-PT'), kg: kg });
+  guardarPesos(p);
+  input.value = '';
+  desenhar();
+});
+
+desenhar();
+</script>
+</body>
+</html>
